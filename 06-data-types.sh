@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# this is comment only in first line # is called as shebang
 NUMBER1=gandhammahesh
 NUMBER2=200
 
