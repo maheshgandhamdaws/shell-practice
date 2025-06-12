@@ -10,12 +10,28 @@ else
     echo "You are running with root access"
 fi
 
-apt install mysql-server -y
+apt list installed mysql
 
-if [ $? -eq 0 ]
+if [ $? -ne 0 ]
 then
-    echo "Installing MYSQL is ... SUCCESS"
+    echo "MYSQL is not installed... going to install it"
+    apt install mysql-server -y
+    if [ $? -eq 0 ]
+    then
+        echo "Installing MYSQL is ... SUCCESS"
+    else
+        echo "Installing MYSQL is ... FAILURE"
+        exit 1
+    fi
 else
-    echo "Installing MYSQL is ... FAILURE"
-    exit 1
+    echo "MYSQL is already installed...Nothing to do"
 fi
+# apt install mysql-server -y
+
+# if [ $? -eq 0 ]
+# then
+#     echo "Installing MYSQL is ... SUCCESS"
+# else
+#     echo "Installing MYSQL is ... FAILURE"
+#     exit 1
+# fi
