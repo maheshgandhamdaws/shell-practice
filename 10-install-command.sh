@@ -10,7 +10,7 @@ else
     echo "You are running with root access"
 fi
 
-apt install mysql -y
+apt install mysql-server -y
 
 if [ $? -eq 0 ]
 then
