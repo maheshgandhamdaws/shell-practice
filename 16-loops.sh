@@ -34,8 +34,8 @@ VALIDATE(){
    
 }
 
-#for package in ${PACKAGES[@]}
-for package in $@
+for package in ${PACKAGES[@]}
+#for package in $@
 do
     apt list installed $package &>>$LOG_FILE
     apt list installed mysql &>>$LOG_FILE
