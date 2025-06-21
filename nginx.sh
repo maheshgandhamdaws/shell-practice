@@ -9,7 +9,9 @@ N="\e[0m"
 LOGS_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo 14-logs.sh | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-PACKAGES=("mysql" "python" "nginx" "apache2")
+PACKAGES=("mysql-server" "python3" "nginx" "apache2")
+echo -e "$Y Updating APT and fixing missing packages... $N" | tee -a $LOG_FILE
+apt-get update --fix-missing -y | tee -a $LOG_FILE
 
 mkdir -p $LOGS_FOLDER
 echo "Script started executing at: $(date)" | tee -a $LOG_FILE
@@ -24,7 +26,8 @@ fi
 
 # validate functions takes input as exit status, what command they tried to install
 VALIDATE(){
-    if [ $1 -eq 0 ]
+    dpkg -s $2 &>/dev/null
+    if [ $? -eq 0 ];
     then
         echo -e "Installing $2 is ...$G SUCCESS $N" | tee -a $LOG_FILE
     else
@@ -45,5 +48,9 @@ do
         VALIDATE $? "$package"
     else
         echo -e "Nothing to do $package... $Y already installed $N" | tee -a $LOG_FILE
+        echo -e "$Y Starting and enabling nginx... $N" | tee -a $LOG_FILE
+        systemctl start nginx &>>$LOG_FILE
+        systemctl enable nginx &>>$LOG_FILE
+        systemctl status nginx | tee -a $LOG_FILE
 fi
 done
